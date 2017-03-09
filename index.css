@@ -1,0 +1,59 @@
+/*
+Armando Campos
+3/6/17
+*/
+
+body {
+	font-size: 16px;
+}
+
+.wrapper {
+	margin: 8px;
+	padding: 8px;
+	border: solid 2px #000;
+}
+
+/* [ - - General Custom Classes - - ] */
+
+.area {
+	margin: 4px;
+	padding: 6px;
+	border: solid 2px #c1c1c1;
+	overflow: hidden;
+}
+
+.item {
+	float: left;
+	display: inline-block;
+	padding: 4px;
+}
+
+.centext {
+	text-align: center;
+}
+
+.card {
+	position: relative;
+	z-index: 0;
+	width: 80px;
+	filter: brightness(100%) hue-rotate(0deg);
+	transform: scale(1.0);
+	transition: filter 0.2s, transform 0.2s;
+}
+
+.card:hover {
+	z-index: 100;
+	filter: brightness(86%) hue-rotate(90deg);
+	transform: scale(1.2);
+	cursor: pointer;
+}
+
+.card_flipped {
+	position: relative;
+	z-index: 0;
+	width: 80px;
+	filter: brightness(100%) hue-rotate(0deg);
+	transform: scale(1.0);
+	cursor: initial;
+}
+
