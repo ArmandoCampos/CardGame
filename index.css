@@ -53,7 +53,25 @@ body {
 	z-index: 0;
 	width: 80px;
 	filter: brightness(100%) hue-rotate(0deg);
-	transform: scale(1.0);
+	transition: filter 0.2s, transform 0.2s;
 	cursor: initial;
 }
 
+.card_final {
+	transform: scale(0.8);
+	filter: brightness(80%);
+	transition: filter 0.2s, transform 0.2s;
+}
+
+button {
+	border: solid 4px #c1c1c1;
+	background: #FFF;
+	font-size: 24px;
+	color: #000;
+	transition: color 0.2s;
+}
+
+button:hover {
+	cursor: pointer;
+	color: #c1c1c1;
+}
