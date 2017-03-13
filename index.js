@@ -75,7 +75,7 @@ function array_write2D(array){
 
 // [ - - Alarms - - ]
 // Initialize Alarms
-var alarm = [[NONE, valid, NONE], [NONE, valid, NONE]];
+var alarm = [[NONE, valid, NONE], [NONE, valid, NONE], [NONE, valid, NONE], [NONE, valid, NONE], [NONE, valid, NONE]];
 // Alarm Methods
 /**
 	* Update all Alarms.
@@ -160,7 +160,11 @@ var GAME = {
         this.interval = setInterval(update, 60);
         },
     //alarm: [[NONE, valid, NONE], [NONE, valid, NONE]],
-    cards : [[NONE, NONE, NONE, NONE], [NONE, NONE, NONE, NONE], [NONE, NONE, NONE, NONE], [NONE, NONE, NONE, NONE]],
+    cards : [[NONE, NONE, NONE, NONE],
+    [NONE, NONE, NONE, NONE],
+    [NONE, NONE, NONE, NONE],
+    [NONE, NONE, NONE, NONE],
+    [NONE, NONE, NONE, NONE]],
     // Deck of 16 Cards, 2 of Each
     deck : [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7],
     card_lst : NONE,
@@ -232,7 +236,11 @@ function card(cID){
 
 	// Flip Card
 	//$("#card0").attr("src", "assets/pizza.png");
+	alarm_add(7, card_check, cID);
 	card_flip_first(cID);
+}
+
+function card_check(cID){
 	// Check Deck Status
 	if(GAME.card_lst != NONE){
 		// Compare to Held Card
@@ -249,15 +257,16 @@ function card(cID){
 			STATE = 3;
 			card_flip_delay(cID, 12);
 			card_flip_delay(c2ID, 12);
+			alert("flip both cards back");
 		}
 		// Set Held Card to NONE
-		//alert("Reseting Held Card!");
+		alert("Reseting Held Card!");
 		GAME.card_lst = NONE;
 		
 	}else{
 		// Hold this card
 		GAME.card_lst = cID;
-		//alert("Now Holding: "+String(cID));
+		alert("Now Holding: "+String(cID));
 	}
 }
 
@@ -281,7 +290,7 @@ function card_flip(cID){
 	* @param cID CardID of card to flip.
 */
 function card_flip_ex(cID){
-	card_flip(cID);
+	card_flip_first(cID);
 	STATE = 2;
 }
 
@@ -306,6 +315,7 @@ function card_flip_anim_ex(cID){
 	* @param time Time (frames) to delay cardflip.
 */
 function card_flip_delay(cID, time){
+	alert("Flip Delay: "+cID);
 	alarm_add(time, card_flip_ex, cID);
 }
 
