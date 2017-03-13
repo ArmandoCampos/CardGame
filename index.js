@@ -5,24 +5,35 @@ Armando Campos
 // Constants
 const NONE = -1;
 
-// General Methods
+// [ - - General Methods - - ]
+/**
+	* Get Element by use of ID.
+	* @param name ID of Element.
+*/
 function getByID(name){
 	return document.getElementById(name);
 }
 
-// Random Integer
+/**
+	* Get Random Integer.
+	* @param max Maximum Integer.
+*/
 function random_int(max){
 	return Math.floor(Math.random()*max);
 }
 
-// Valid
+/**
+	* Check if a Value is defined.
+	* @param value Value to Check.
+*/
 function valid(value){
 	return (value != NONE);
 }
 
-// Array: Remove Random
-// (Warning, it does not check if there is no
-// value left to remove)
+/**
+	* Remove Random Value from Array. Warning, Will not check for remaining values.
+	* @param array Array to remove value from.
+*/
 function array_random_removal(array){
 	var length = array.length;
 	var pos = random_int(length);
@@ -32,11 +43,13 @@ function array_random_removal(array){
 		val = array[pos];
 	}
 	array[pos] = NONE;
-	//alert("Random Removal: POSITION = "+String(pos)+" VALUE = "+String(val));
 	return val;
 }
 
-// Array: Write
+/**
+	* Convert entire array into a String.
+	* @param array Array to convert into String.
+*/
 function array_write(array){
 	var str = "[";
 	for(var i = 0; i < array.length; i++){
@@ -46,6 +59,10 @@ function array_write(array){
 	}
 	return str;
 }
+/**
+	* Convert entire 2D array into a String.
+	* @param array Array to convert into String.
+*/
 function array_write2D(array){
 	var str = "[";
 	for(var i = 0; i < array.length; i++){
@@ -60,6 +77,9 @@ function array_write2D(array){
 // Initialize Alarms
 var alarm = [[NONE, valid, NONE], [NONE, valid, NONE]];
 // Alarm Methods
+/**
+	* Update all Alarms.
+*/
 function alarm_update(){
 	for(var i = 0; i < alarm.length; i++){
 		var time = alarm[i][0];
@@ -85,14 +105,17 @@ function alarm_update(){
 	}
 }
 
+/**
+	* Add a new Alarm.
+	* @param time Time (frames) to delay alarm.
+	* @param func Function to execute upon alarm end.
+	* @param param [OPT] Parameter to use with Function.
+*/
 function alarm_add(time, func, param){
 	// Check Alarms for an Empty Slot
 	var open = NONE;
 	for(var i = 0; i < alarm.length; i++){
 		var tt = alarm[i][0];
-		//alert(String(alarm[i][1]));
-		//alert("Alarm Check "+String(i)+": "+String(tt));
-		//alert("Time: "+time+" / NONE: "+NONE);
 		if(tt < 0){
 			open = i;
 			break;
@@ -100,9 +123,15 @@ function alarm_add(time, func, param){
 	}
 
 	alarm_set(open, time, func, param);
-	//alert("Alarm Added "+String(open));
 }
 
+/**
+	* Set Alarm.
+	* @param aID Alarm Position.
+	* @param time Time (frames) to delay alarm.
+	* @param func Function to execute upon alarm end.
+	* @param param [OPT] Parameter to use with Function.
+*/
 function alarm_set(aID, time, func, param){
 	alarm[aID][0] = time;
 	alarm[aID][1] = func;
@@ -143,14 +172,17 @@ var GAME = {
     }
 }
 
-// Game Methods
+// [ - - Game Methods - - ]
+/**
+	* Begin Game.
+*/
 function play(){
 	GAME.start();
-	
-	//alert("Cards 0,0 = "+String(GAME.cards[0][0]));
-	//alert("RandomNumber of 16 = "+String(random_int(16)));
 }
 
+/**
+	* Update Game.
+*/
 function update(){
 	alarm_update();
 	switch(STATE){
@@ -177,7 +209,7 @@ function update(){
 				STATE = 5;
 			}
 			break;
-		case 4:
+		case 4: // not used yet
 
 			break;
 		case 5: // Win
@@ -188,6 +220,10 @@ function update(){
 
 // [ - - Cards - - ]
 // Main Card Function
+/**
+	* Card Functionality.
+	* @param cID CardID.
+*/
 function card(cID){
 	if(STATE != 2)return;
 	var cc = $('#card'+String(cID));
@@ -196,7 +232,7 @@ function card(cID){
 
 	// Flip Card
 	//$("#card0").attr("src", "assets/pizza.png");
-	card_flip(cID);
+	card_flip_first(cID);
 	// Check Deck Status
 	if(GAME.card_lst != NONE){
 		// Compare to Held Card
@@ -225,7 +261,10 @@ function card(cID){
 	}
 }
 
-// Flip Card
+/**
+	* Flip Card.
+	* @param cID CardID of card to flip.
+*/
 function card_flip(cID){
 	var cc = $('#card'+String(cID));
 	cc.toggleClass("card");
@@ -237,17 +276,42 @@ function card_flip(cID){
 	cc.attr("src", "assets/card"+ext+".png");
 }
 
+/**
+	* Card Flip EX. Used by Alarms.
+	* @param cID CardID of card to flip.
+*/
 function card_flip_ex(cID){
 	card_flip(cID);
 	STATE = 2;
 }
 
-// Flip Card, after Delay 
+function card_flip_first(cID){
+	card_flip_anim_ex(cID);
+	alarm_add(18, card_flip_anim, cID);
+}
+
+function card_flip_anim(cID){
+	var cc = $('#card'+String(cID));
+	cc.toggleClass("card_flipping");
+}
+
+function card_flip_anim_ex(cID){
+	card_flip(cID);
+	card_flip_anim(cID);
+}
+
+/**
+	* Flip a card after a delay in time.
+	* @param cID CardID of card to flip.
+	* @param time Time (frames) to delay cardflip.
+*/
 function card_flip_delay(cID, time){
 	alarm_add(time, card_flip_ex, cID);
 }
 
-// Refresh Card Values
+/**
+	* Refresh all Cards, rearranging values of the cards.
+*/
 function cards_refresh(){
 	// Each Card selects a random value from the Deck
 	// Duplicate Deck
@@ -258,6 +322,9 @@ function cards_refresh(){
 	//alert("Card Selection:\n"+array_write2D(GAME.cards));
 }
 
+/**
+	* Wipe all Cards, removing attached classes and resetting game variables.
+*/
 function cards_wipe(){
 	for(var i = 0; i < 4; i++){
 		for(var j = 0; j < 4; j++)card_set(i, j, NONE);
@@ -274,25 +341,47 @@ function cards_wipe(){
 		}
 }
 
+/**
+	* Get Card at position given.
+	* @param cx CardX.
+	* @param cy CardY.
+*/
 function card_get(cx, cy){
 	//alert("Card Get : "+cx+" "+cy);
 	return GAME.cards[cx][cy];
 }
 
+/**
+	* Set Card at position given.
+	* @param cx CardX.
+	* @param cy CardY.
+	* @param cv CardValue to set to.
+*/
 function card_set(cx, cy, cv){
 	return GAME.cards[cx][cy] = cv;
 }
 
+/**
+	* Card Position Get X.
+	* @param cID CharID to get cx of.
+*/
 function cp_x(cID){
 	//alert("cp_x:"+cID+" = "+(cID%4));
 	return (cID%4);
 }
 
+/**
+	* Card Position Get Y.
+	* @param cID CharID to get cy of.
+*/
 function cp_y(cID){
 	return Math.floor(cID/4);
 }
 
-// Deck
+// [ - - Deck - - ]
+/**
+	* Get number of remaining cards in the deck.
+*/
 function deck_remaining(){
 	var num = 0;
 	for(var i = 0; i < 4; i++){
@@ -303,14 +392,17 @@ function deck_remaining(){
 	return num;
 }
 
-// Player Control Buttons
+// [ - - Player Control Buttons - - ]
+/**
+	* Player Reset Button.
+*/
 function btn_reset(){
 	STATE = 0;
 }
 
 /*
-TO-DO List:
-- Finsh Game States {
+TO-DO List: <X = finished>
+X- Finsh Game States {
 	- Hold Last Flipped Card
 	- Compare recent flip to new flip
 }
