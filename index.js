@@ -287,7 +287,7 @@ function card_flip_ex(cID){
 
 function card_flip_first(cID){
 	card_flip_anim(cID);
-	alarm_add(6, card_flip_anim_ex, cID);
+	alarm_add(8, card_flip_anim_ex, cID);
 }
 
 function card_flip_anim(cID){
