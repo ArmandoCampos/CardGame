@@ -97,7 +97,7 @@ function alarm_update(){
 			//alert("Alarm Function. No Parameter\n"+func);
 			func();
 		}else{
-			//alert("Alarm "+String(i)+" Function. With Parameter");
+			alert("Alarm "+String(i)+" Function. With Parameter. "+String(func));
 			func(param);
 		}
 		// Reset Alarm
@@ -121,7 +121,7 @@ function alarm_add(time, func, param){
 			break;
 		}
 	}
-
+	alert("Added Alarm: "+String(open)+" / "+String(time)+" / "+String(func)+" / "+String(param));
 	alarm_set(open, time, func, param);
 }
 
@@ -161,6 +161,9 @@ var GAME = {
         },
     //alarm: [[NONE, valid, NONE], [NONE, valid, NONE]],
     cards : [[NONE, NONE, NONE, NONE],
+    [NONE, NONE, NONE, NONE],
+    [NONE, NONE, NONE, NONE],
+    [NONE, NONE, NONE, NONE],
     [NONE, NONE, NONE, NONE],
     [NONE, NONE, NONE, NONE],
     [NONE, NONE, NONE, NONE],
@@ -291,7 +294,7 @@ function card_flip(cID){
 */
 function card_flip_ex(cID){
 	card_flip_first(cID);
-	STATE = 2;
+	if(cID != GAME.card_lst)STATE = 2;
 }
 
 function card_flip_first(cID){
