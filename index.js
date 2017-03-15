@@ -75,7 +75,14 @@ function array_write2D(array){
 
 // [ - - Alarms - - ]
 // Initialize Alarms
-var alarm = [[NONE, valid, NONE], [NONE, valid, NONE], [NONE, valid, NONE], [NONE, valid, NONE], [NONE, valid, NONE]];
+var alarm = [[NONE, valid, NONE],
+[NONE, valid, NONE],
+[NONE, valid, NONE],
+[NONE, valid, NONE],
+[NONE, valid, NONE],
+[NONE, valid, NONE],
+[NONE, valid, NONE],
+[NONE, valid, NONE]];
 // Alarm Methods
 /**
 	* Update all Alarms.
@@ -97,7 +104,7 @@ function alarm_update(){
 			//alert("Alarm Function. No Parameter\n"+func);
 			func();
 		}else{
-			alert("Alarm "+String(i)+" Function. With Parameter. "+String(func));
+			//alert("Alarm "+String(i)+" Function. With Parameter. "+String(func));
 			func(param);
 		}
 		// Reset Alarm
@@ -115,13 +122,13 @@ function alarm_add(time, func, param){
 	// Check Alarms for an Empty Slot
 	var open = NONE;
 	for(var i = 0; i < alarm.length; i++){
-		var tt = alarm[i][0];
-		if(tt < 0){
+		var ff = alarm[i][1];
+		if(ff == valid){
 			open = i;
 			break;
 		}
 	}
-	alert("Added Alarm: "+String(open)+" / "+String(time)+" / "+String(func)+" / "+String(param));
+	//alert("Added Alarm: "+String(open)+" / "+String(time)+" / "+String(func)+" / "+String(param));
 	alarm_set(open, time, func, param);
 }
 
@@ -258,18 +265,19 @@ function card_check(cID){
 			GAME.miss();
 			// Re-Flip both Cards
 			STATE = 3;
+			//alert("Flip both back, "+cID+" "+c2ID);
 			card_flip_delay(cID, 12);
 			card_flip_delay(c2ID, 12);
-			alert("flip both cards back");
+			//alert("flip both cards back");
 		}
 		// Set Held Card to NONE
-		alert("Reseting Held Card!");
+		//alert("Reseting Held Card!");
 		GAME.card_lst = NONE;
 		
 	}else{
 		// Hold this card
 		GAME.card_lst = cID;
-		alert("Now Holding: "+String(cID));
+		//alert("Now Holding: "+String(cID));
 	}
 }
 
@@ -293,11 +301,13 @@ function card_flip(cID){
 	* @param cID CardID of card to flip.
 */
 function card_flip_ex(cID){
+	//alert("Card Flip EX: "+cID);
 	card_flip_first(cID);
-	if(cID != GAME.card_lst)STATE = 2;
+	STATE = 2;
 }
 
 function card_flip_first(cID){
+	//alert("card flip first: "+cID);
 	card_flip_anim(cID);
 	alarm_add(7, card_flip_anim_ex, cID);
 }
@@ -318,7 +328,6 @@ function card_flip_anim_ex(cID){
 	* @param time Time (frames) to delay cardflip.
 */
 function card_flip_delay(cID, time){
-	alert("Flip Delay: "+cID);
 	alarm_add(time, card_flip_ex, cID);
 }
 
